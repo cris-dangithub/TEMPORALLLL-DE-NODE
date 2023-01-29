@@ -3,6 +3,7 @@ const cors = require('cors');
 const { usersRouter } = require('../routes/users.routes');
 const { repairsRouter } = require('../routes/repairs.routes');
 const { db } = require('../database/db');
+const morgan = require('morgan');
 
 class Server {
   constructor() {
@@ -13,7 +14,7 @@ class Server {
       repairs: '/api/v1/repairs',
     };
 
-    this.database()
+    this.database();
     this.middlewares();
     this.routes();
   }
@@ -33,6 +34,7 @@ class Server {
   }
 
   middlewares() {
+    if (process.env.NODE_ENV === 'development') this.app.use(morgan('dev'));
     this.app.use(cors());
     this.app.use(express.json());
   }
